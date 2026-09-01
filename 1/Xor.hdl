@@ -11,5 +11,10 @@ CHIP Xor {
     OUT out;
 
     PARTS:
-    //// Replace this comment with your code.
+    // define the or gate using and, not, and or gates
+        Not(in=a, out=nota); // not gate returns 1 if a is 0, else returns 0
+        Not(in=b, out=notb); // not gate returns 1 if b is 0, else returns 0
+        And(a=a, b=notb, out=and1); // and gate returns 1 if both a and notb are 1, else returns 0
+        And(a=nota, b=b, out=and2);
+        Or(a=and1, b=and2, out=out); // or gate returns 1 if either and1 or and2 is 1, else returns 0
 }

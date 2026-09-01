@@ -14,5 +14,10 @@ CHIP Mux4Way16 {
     OUT out[16];
     
     PARTS:
-    //// Replace this comment with your code.
+    // define the 4-way 16-bit multiplexer
+    // use two 2-way 16-bit multiplexers to select between the first two inputs and the last two inputs
+    // then use a 2-way 16-bit multiplexer to select between the two groups of two inputs
+    Mux16(a=a, b=b, sel=sel[0], out=ab); // if sel[0] = 0, then ab = a, else ab = b
+    Mux16(a=c, b=d, sel=sel[0], out=cd); // if sel[0] = 0, then cd = c, else cd = d
+    Mux16(a=ab, b=cd, sel=sel[1], out=out); // if sel[1] = 0, then out = ab, else out = cd
 }

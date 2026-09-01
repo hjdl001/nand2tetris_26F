@@ -11,5 +11,9 @@ CHIP Or {
     OUT out;
 
     PARTS:
-    //// Replace this comment with your code.
+    // define the or gate using not and nand gates
+    // use not and nand gates to define the or gate
+        Not(in=a, out=nota); // not gate returns 1 if a is 0, else returns 0
+        Not(in=b, out=notb); // not gate returns 1 if b is 0, else returns 0
+        Nand(a=nota, b=notb, out=out); // nand gate returns 0 if both nota and notb are 1, else returns 1
 }

@@ -11,5 +11,12 @@ CHIP Mux {
     OUT out;
 
     PARTS:
-    //// Replace this comment with your code.
+    // define the 2-way multiplexer
+    // use not gate to invert the sel input
+    // use the and gate to perform the rest
+    // use or gate to combine the results
+        Not(in=sel, out=notsel); // sel = 0 -> notsel = 1
+        And(a=a, b=notsel, out=and1); // if sel = 0, then and1 = a
+        And(a=b, b=sel, out=and2); // if sel = 1, then and2 = b
+        Or(a=and1, b=and2, out=out); // out = a if sel = 0, else out = b
 }

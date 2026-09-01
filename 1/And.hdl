@@ -11,5 +11,8 @@ CHIP And {
     OUT out;
     
     PARTS:
-    //// Replace this comment with your code.
+    // define the and gate using a nand gate and a not gate
+        Nand(a=a, b=b, out=nandOut); // nand gate returns 0 if both a and b are 1, else returns 1
+        Not(in=nandOut, out=out); // not gate returns 1 if nandOut is 0, else returns 0
+
 }

@@ -11,5 +11,6 @@ CHIP Not {
     OUT out;
 
     PARTS:
-    //// Replace this comment with your code.
+    // define the not gate using a nand gate
+    Nand(a=in, b=in, out=out); // nand gate returns 0 if both a and b are 1, else returns 1
 }

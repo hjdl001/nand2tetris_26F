@@ -12,5 +12,11 @@ CHIP DMux {
     OUT a, b;
 
     PARTS:
-    //// Replace this comment with your code.
+    // define the 2-way demultiplexer
+    // use Not gate to invert the sel input
+    // use the and gate to perform the rest
+        Not(in=sel, out=nsel); // sel = 0 -> nsel = 1
+        And(a=in, b=nsel, out=a); // if sel = 0, then a = in
+        And(a=in, b=sel, out=b); // if sel = 1, then b = in
+
 }

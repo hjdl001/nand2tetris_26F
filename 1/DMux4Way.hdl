@@ -9,10 +9,15 @@
  *                [0, 0, in, 0] if sel = 10
  *                [0, 0, 0, in] if sel = 11
  */
+
 CHIP DMux4Way {
     IN in, sel[2];
     OUT a, b, c, d;
 
     PARTS:
-    //// Replace this comment with your code.
+    // define the 4-way demultiplexer
+    // use two 2-way demultiplexers to split the input into four outputs
+        DMux(in=in, sel=sel[1], a=ab, b=cd); // if sel[1] = 0, then ab = in, else cd = in
+        DMux(in=ab, sel=sel[0], a=a, b=b); // if sel[0] = 0, then a = ab, else b = ab
+        DMux(in=cd, sel=sel[0], a=c, b=d); // if sel[0] = 0, then c = cd, else d = cd
 }
