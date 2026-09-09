@@ -11,11 +11,10 @@ CHIP Add16 {
     OUT out[16];
 
     PARTS:
-    // define the 16-bit adder using 16 full adders
-    // approach: each full adder computes the sum of the corresponding bits from a and b, and the carry bit from the previous full adder
-    // basically plug and chug for each bit
-    // start from the lsb and work to the msb
-    FullAdder(a=a[0], b=b[0], c=false, sum=out[0], carry=c1); // first full adder computes the sum of the least significant bits
+    // define the 16-bit adder using a combination of half adders and full adders
+    // approach: use a half adder for the least significant bit, and full adders for the remainder
+    // the carry bit from each adder is passed to the next adder in the chain
+    HalfAdder(a=a[0], b=b[0], sum=out[0], carry=c1); // first half adder computes the sum of the least significant bits
     FullAdder(a=a[1], b=b[1], c=c1, sum=out[1], carry=c2); // second full adder computes the sum of the next bits
     FullAdder(a=a[2], b=b[2], c=c2, sum=out[2], carry=c3);
     FullAdder(a=a[3], b=b[3], c=c3, sum=out[3], carry=c4);

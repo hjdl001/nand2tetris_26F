@@ -41,5 +41,53 @@ CHIP ALU {
         ng;      // if (out < 0)  equals 1, else 0
 
     PARTS:
-    //// Replace this comment with your code.
+    // define the ALU using a combo of the gates and chips
+    // approach: use the Mux16 chip to select between the manipulated x and y inputs, 
+    // and then use the add16 and and16 chips
+   
+    PARTS:
+
+    // part 1: manipulate the x input based on zx and nx
+    // approach: use the Mux16 chip to select between the x input and a 16-bit constant of 0,
+    // then use the Not16 chip to negate the result if nx is 1
+    Mux16(a=x, b=false, sel=zx, out=zxout); // if zx is 1, set x to 0, else keep x as is
+    Not16(in=zxout, out=notzxout); // if nx is 1, set x to !x, else keep x as is
+    Mux16(a=zxout, b=notzxout, sel=nx, out=xfinal); // if nx is 1, set x to !x, else keep x as is
+
+
+
+
+    // part 2: manipulate the y input based on zy and ny
+    // approach: use the Mux16 chip to select between the y input and a 16-bit constant of 0,
+    // then use the Not16 chip to negate the result if ny is 1
+    Mux16(a=y, b=false, sel=zy, out=zyout); // if zy is 1, set y to 0, else keep y as is
+    Not16(in=zyout, out=notzyout); // if ny is 1, set y to !y, else keep y as is
+    Mux16(a=zyout, b=notzyout, sel=ny, out=yfinal); // if ny is 1, set y to !y, else keep y as is
+
+
+
+    // part 3: compute the output based on f
+    // approach: use the And16 chip to compute x & y, and the Add16 chip to compute x + y,
+    // then use the Mux16 chip to select between the two results based on f
+    And16(a=xfinal, b=yfinal, out=andout);
+    Add16(a=xfinal, b=yfinal, out=addout);
+    Mux16(a=andout, b=addout, sel=f, out=fout);
+
+
+
+    // part 4: manipulate the final output based on no
+    // approach: use the Not16 chip to negate the output if no is 1
+    Not16(in=fout, out=notfout);
+    Mux16(a=fout, b=notfout, sel=no, out=out, out[0..7]=low8, out[8..15]=high8, out[15]=ng);
+
+    
+
+    // part 5: compute zr
+    // approach: use the Or8Way chip to compute the OR of the lower 8 bits and the upper 8 bits of the output,
+    // then use the Or chip to combine the two results, and finally use the Not chip
+    // to negate the result to get zr
+    Or8Way(in=low8, out=orlow);
+    Or8Way(in=high8, out=orhigh);
+    Or(a=orlow, b=orhigh, out=ortotal);
+    Not(in=ortotal, out=zr);
 }
