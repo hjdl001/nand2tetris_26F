@@ -11,5 +11,9 @@ CHIP Inc16 {
     OUT out[16];
 
     PARTS:
-    //// Replace this comment with your code.
+    // define the 16-bit incrementer using a 16-bit adder
+    // approach: use the Add16 chip to add the input in with a constant value of 1
+    // the constant value of 1 is represented as a 16-bit binary number with the least significant bit set to 1 and all other bits set to 0
+    Add16(a=in, b[0]=true, b[1..15]=false, out=out); // use the Add16 chip to add the input
+    
 }

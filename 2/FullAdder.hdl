@@ -11,5 +11,10 @@ CHIP FullAdder {
         carry;   // Left bit of a + b + c
 
     PARTS:
-    //// Replace this comment with your code.
+    // define the full adder using two half adders and an or gate
+    // approach: first half adder computes the sum of a and b, second half adder computes the sum of the result and c, and the or gate computes the final carry bit
+    HalfAdder(a=a, b=b, sum=s1, carry=c1); // first half adder computes the sum of a and b, and outputs the carry bit c1
+    HalfAdder(a=s1, b=c, sum=sum, carry=c2); // second half adder computes the sum from the first half adder and the carry bit c
+    Or(a=c1, b=c2, out=carry); // or gate computes the final carry bit by combining the carry bits from the two half
+    
 }

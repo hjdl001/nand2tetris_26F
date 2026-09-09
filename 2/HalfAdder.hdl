@@ -11,5 +11,8 @@ CHIP HalfAdder {
         carry;  // Left bit of a + b
 
     PARTS:
-    //// Replace this comment with your code.
+    // define the half adder using and and xor gates
+    Xor(a=a, b=b, out=sum); // xor gate returns 1 if either a or b is 1, else returns 0
+    And(a=a, b=b, out=carry); // and gate returns 1 if both a and b are 1, else returns 0
+
 }
