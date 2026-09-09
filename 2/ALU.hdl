@@ -44,8 +44,6 @@ CHIP ALU {
     // define the ALU using a combo of the gates and chips
     // approach: use the Mux16 chip to select between the manipulated x and y inputs, 
     // and then use the add16 and and16 chips
-   
-    PARTS:
 
     // part 1: manipulate the x input based on zx and nx
     // approach: use the Mux16 chip to select between the x input and a 16-bit constant of 0,
@@ -80,7 +78,7 @@ CHIP ALU {
     Not16(in=fout, out=notfout);
     Mux16(a=fout, b=notfout, sel=no, out=out, out[0..7]=low8, out[8..15]=high8, out[15]=ng);
 
-    
+
 
     // part 5: compute zr
     // approach: use the Or8Way chip to compute the OR of the lower 8 bits and the upper 8 bits of the output,
