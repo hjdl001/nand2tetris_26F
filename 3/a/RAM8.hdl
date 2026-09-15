@@ -13,5 +13,13 @@ CHIP RAM8 {
     OUT out[16];
 
     PARTS:
-    //// Replace this comment with your code.
-}
+    //// approach: use a demux to select which register to load based off the address signal
+
+    // use a demux 8way to do load bits
+
+    // use mux (one side of the registers)
+
+
+
+
+  

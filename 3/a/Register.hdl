@@ -13,5 +13,11 @@ CHIP Register {
     OUT out[16];
 
     PARTS:
-    //// Replace this comment with your code.
+    //// approach: use a mux to select between the input and the output of the register based off the load signal
+
+    // use a mux to select between the input and the output of the register based off the load signal
+    Mux16(a=out, b=in, sel=load, out=next);
+
+    // use a register to store the value of the register
+    DFF(in=next, out=out);
 }

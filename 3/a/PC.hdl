@@ -14,5 +14,18 @@ CHIP PC {
     OUT out[16];
     
     PARTS:
-    //// Replace this comment with your code.
+    // approach: use a mux to select between the input and the output of the register based off the load signal
+    // use a mux to select between the output of the register and the incremented value based
+    // off the inc signal
+
+    // use a mux to select between the output of the register and 0 based off the reset signal
+    // use a register to store the value of the counter
+
+    // use an adder to increment the value of the counter
+    // use a register to store the value of the counter
+
+    // use an adder to increment the value of the counter
+    // use a register to store the value of the counter
+    
+    // use an adder to increment the value of the counter   
 }
