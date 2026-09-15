@@ -13,12 +13,11 @@ CHIP Bit {
     OUT out;
 
     PARTS:
-    //// approach: use a dff to store value of the register
-    // use the mux to select between the input and the output of the dff based off the load signal 
+    /// approach: use the dff to store the value, and use a mux to select between the current value and the input value based on the load signal
 
-    // use a dff to store the value of the register
-    DFF(in=next, out=out);
+    // select between the current bit and the input bit based on load
+    Mux(a=out1, b=in, sel=load, out=next);
 
-    //use a mux to select between the input and value of the register
-    Mux(a=out, b=in, sel=load, out=next);
+    // store the selected value
+    DFF(in=next, out=out, out=out1);
 }

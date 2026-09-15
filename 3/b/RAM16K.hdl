@@ -13,5 +13,19 @@ CHIP RAM16K {
     OUT out[16];
 
     PARTS:
-    //// Replace this comment with your code.
+    /// approach: use a demux to select which RAM4K should load, and use a mux to select the output of the selected RAM4K
+
+    // select which RAM4K block should receive the load signal
+    // use demux to select which RAM4K block should receive the load signal based on the upper 2 bits of the address
+    DMux4Way(in=load, sel=address[12..13], a=load0, b=load1, c=load2, d=load3);
+
+    // create four 4K-register RAMs and load only the selected one
+    RAM4K(in=in, load=load0, address=address[0..11], out=out0);
+    RAM4K(in=in, load=load1, address=address[0..11], out=out1);
+    RAM4K(in=in, load=load2, address=address[0..11], out=out2);
+    RAM4K(in=in, load=load3, address=address[0..11], out=out3);
+
+    // select the output from the RAM4K block chosen by the upper 2 address bits
+    // again use mux to select the output from the RAM4K block chosen by the upper 2 address bits
+    Mux4Way16(a=out0, b=out1, c=out2, d=out3, sel=address[12..13], out=out);
 }

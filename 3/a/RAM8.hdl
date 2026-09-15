@@ -13,13 +13,23 @@ CHIP RAM8 {
     OUT out[16];
 
     PARTS:
-    //// approach: use a demux to select which register to load based off the address signal
+   /// approach: use a demux to select which register should load, and use a mux to select the output of the selected register
 
-    // use a demux 8way to do load bits
+    // select which register should load
+    // demux the load signal to the appropriate register based on the address
+    DMux8Way(in=load, sel=address, a=load0, b=load1, c=load2, d=load3, e=load4, f=load5, g=load6, h=load7);
 
-    // use mux (one side of the registers)
+    // eight 16-bit registers
+    Register(in=in, load=load0, out=reg0);
+    Register(in=in, load=load1, out=reg1);
+    Register(in=in, load=load2, out=reg2);
+    Register(in=in, load=load3, out=reg3);
+    Register(in=in, load=load4, out=reg4);
+    Register(in=in, load=load5, out=reg5);
+    Register(in=in, load=load6, out=reg6);
+    Register(in=in, load=load7, out=reg7);
 
-
-
-
-  
+    // select the register value indicated by the address
+    // mux the outputs of the registers to the output based on the address 
+    Mux8Way16(a=reg0, b=reg1, c=reg2, d=reg3, e=reg4, f=reg5, g=reg6, h=reg7, sel=address, out=out);
+}

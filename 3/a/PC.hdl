@@ -10,22 +10,25 @@
  * else              out(t+1) = out(t)
  */
 CHIP PC {
-    IN in[16],inc, load, reset;
+    IN in[16], inc, load, reset;
     OUT out[16];
-    
+
     PARTS:
-    // approach: use a mux to select between the input and the output of the register based off the load signal
-    // use a mux to select between the output of the register and the incremented value based
-    // off the inc signal
-
-    // use a mux to select between the output of the register and 0 based off the reset signal
-    // use a register to store the value of the counter
-
-    // use an adder to increment the value of the counter
-    // use a register to store the value of the counter
-
-    // use an adder to increment the value of the counter
-    // use a register to store the value of the counter
+    /// approach: use a register to store the value
+    /// and use a series of muxes to select between the current value, the input value, and the incremented value based on the control signals
     
-    // use an adder to increment the value of the counter   
+    // increment the current value
+    Inc16(in=out1, out=incOut);
+
+    // if inc is asserted, use the incremented value; otherwise keep the current value
+    Mux16(a=out1, b=incOut, sel=inc, out=incMuxOut);
+
+    // if load is asserted, use the input value; otherwise use the inc/hold result
+    Mux16(a=incMuxOut, b=in, sel=load, out=loadMuxOut);
+
+    // if reset is asserted, use zero; otherwise keep the chosen load/inc/hold result
+    Mux16(a=loadMuxOut, b=false, sel=reset, out=next);
+
+    // update the register whenever any action is requested
+    Register(in=next, load=true, out=out1, out=out);
 }
