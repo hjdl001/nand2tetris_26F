@@ -19,5 +19,5 @@ CHIP Bit {
     Mux(a=out1, b=in, sel=load, out=next);
 
     // store the selected value
-    DFF(in=next, out=out, out=out1);
+    DFF(in=next, out=out, out=out1); 
 }
