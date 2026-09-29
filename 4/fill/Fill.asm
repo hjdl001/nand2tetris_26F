@@ -46,4 +46,4 @@
     // if the keyboard value is not zero, a key is being pressed
     // set the color value to white
     @color
-    M=0     
+    M=0
