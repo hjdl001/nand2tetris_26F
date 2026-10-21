@@ -18,5 +18,34 @@ CHIP Computer {
     IN reset;
 
     PARTS:
-    //// Replace this comment with your code.
+    //approach: connect the cpu, rom, and the memory chips to form the complete computer system.
+
+    // read the instruction at the current program counter
+    ROM32K(address=pc, out=instruction);
+
+    // execute the instruction and produce memory controls
+    CPU(inM=memoryOut,
+        instruction=instruction,
+        reset=reset,
+        outM=cpuOut,
+        writeM=writeM,
+        addressM=addressM,
+        pc=pc);
+
+    // read memory and send its value back to the CPU
+    // write the CPU result when writeM is 1
+    Memory(in=cpuOut,
+        load=writeM,
+        address=addressM,
+        out=memoryOut);
+
+    // additional notes -
+    // key/representations:
+    // pc: program counter, holds the address of the next instruction
+    // instruction: holds the current instruction fetched from ROM
+    // cpuOut: output from the CPU to be written to memory
+    // writeM: signal to write to memory
+    // addressM: address in memory to read from or write to
+    // memoryOut: value read from memory, sent back to the CPU
+
 }

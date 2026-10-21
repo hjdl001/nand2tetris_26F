@@ -12,6 +12,8 @@
 // count stores the number of additions already completed.
 // assumes r0 >= 0, r1 >= 0, and r0*r1 < 32768.
 
+// only needs to loop until r1 is zero
+
     // clear r2 so the sum starts at zero
     @R2
     M=0
@@ -35,7 +37,7 @@
     @STOP
     D;JEQ
 
-(ADD)
+(ADD) 
     // load the value being repeatedly added into d
     @R0
     D=M

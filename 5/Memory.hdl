@@ -25,5 +25,53 @@ CHIP Memory {
     OUT out[16];
 
     PARTS:
-	//// Replace this comment with your code.
+        // approach: connect the ram, screen, and keyboard chips to complete the memory system.
+        // use dmux, mux, ram16k, & screen to direct and address.
+
+    // address[14] = 0 selects RAM
+    // address[14] = 1 selects the screen/keyboard region
+    DMux(in=load, sel=address[14],
+         a=loadRAM, b=loadIO);
+
+    // in the screen/keyboard region:
+    // address[13] = 0 selects the screen
+    // the keyboard is read-only, so it gets no load signal
+    DMux(in=loadIO, sel=address[13], a=loadScreen);
+
+    // ram uses addresses 0 through 16383
+    RAM16K(in=in, load=loadRAM,
+           address=address[0..13], out=ramOut); // 14 bits for RAM address
+// ram chip uses 14 bits for its address
+
+    // screen uses addresses 16384 through 24575
+    Screen(in=in, load=loadScreen,
+           address=address[0..12], out=screenOut); // 13 bits for screen address
+// screen chip uses 13 bits for its address
+
+    // keyboard is read at address 24576
+    Keyboard(out=keyboardOut); 
+    // keyboard is read-only, no address needed
+
+    // choose the screen or keyboard output
+    Mux16(a=screenOut, b=keyboardOut,
+          sel=address[13], out=ioOut); // bit 13
+    // mux16 selects between the screen and keyboard outputs based on address[13]
+
+
+    // choose ram or the screen/keyboard output
+    Mux16(a=ramOut, b=ioOut,
+          sel=address[14], out=out);
+    // mux16 selects between the ram and the screen/keyboard outputs based on address[14]
+
+    // additional notes -
+        /// key/representations: inserted below
+        // loadRAM: true if the load signal should go to RAM
+        // loadIO: true if the load signal should go to the screen/keyboard region
+        // loadScreen: true if the load signal should go to the screen
+        // ramOut: output from RAM
+        // screenOut: output from the screen
+        // keyboardOut: output from the keyboard
+        // ioOut: output from the screen/keyboard region
+        // address[14]: selects between RAM and the screen/keyboard region
+        // address[13]: selects between the screen and the keyboard within the screen/keyboard region
 }

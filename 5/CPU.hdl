@@ -27,10 +27,88 @@ CHIP CPU {
                          // the current program (reset==0).
 
     OUT outM[16],        // M value output
-        writeM,          // Write to M? 
+        writeM,          // Write to M?
         addressM[15],    // Address in data memory (of M)
         pc[15];          // address of next instruction
 
     PARTS:
-	//// Replace this comment with your code.
+    /// approach: create the CPU logic step by step, handling a-instructions, c-instructions, and all jumps.
+
+    // check if this is an a-instruction
+    Not(in=instruction[15], out=isA);
+
+    // load A for an A-instruction or when A is a destination
+    And(a=instruction[15], b=instruction[5], out=destA);
+    Or(a=isA, b=destA, out=loadA);
+
+    // choose the instruction value or the ALU result
+    Mux16(a=instruction, b=aluOut,
+        sel=instruction[15], out=aIn);
+
+    // store A and send its lower 15 bits to addressM
+    ARegister(in=aIn, load=loadA,
+        out=aOut, out[0..14]=addressM);
+
+    // load D only when a C-instruction selects D
+    And(a=instruction[15], b=instruction[4], out=loadD);
+    DRegister(in=aluOut, load=loadD, out=dOut);
+
+    // choose A or M as the second ALU input
+    Mux16(a=aOut, b=inM,
+        sel=instruction[12], out=aluIn);
+
+    // perform the calculation using the instruction's control bits
+    ALU(x=dOut, y=aluIn,
+        zx=instruction[11], nx=instruction[10],
+        zy=instruction[9], ny=instruction[8],
+        f=instruction[7], no=instruction[6],
+        out=aluOut, out=outM, zr=zr, ng=ng);
+
+    // write to memory only when a C-instruction selects M
+    And(a=instruction[15], b=instruction[3], out=writeM);
+
+    // a positive result is neither zero nor negative
+    Or(a=zr, b=ng, out=zeroOrNegative);
+    Not(in=zeroOrNegative, out=positive);
+
+    // check each jump condition
+    And(a=ng, b=instruction[2], out=jumpNegative);
+    And(a=zr, b=instruction[1], out=jumpZero);
+    And(a=positive, b=instruction[0], out=jumpPositive);
+
+    // combine the jump conditions
+    Or(a=jumpNegative, b=jumpZero, out=jump1);
+    Or(a=jump1, b=jumpPositive, out=jump2);
+
+    // only jump during a C-instruction
+    And(a=instruction[15], b=jump2, out=loadPC);
+    Not(in=loadPC, out=incPC);
+
+    // jump to A or move to the next instruction
+    // reset overrides both and sets the program counter to 0
+    PC(in=aOut, load=loadPC, inc=incPC,
+        reset=reset, out[0..14]=pc);
+
+    // additional notes -
+    // key/representations (below)
+    // isA: true if the instruction is an A-instruction
+    // destA: true if the instruction is a C-instruction with A as the destination
+    // loadA: true if the A register should be loaded
+    // aIn: input to the A register
+    // aOut: output from the A register
+    // loadD: true if the D register should be loaded
+    // dOut: output from the D register
+    // aluIn: input to the ALU
+    // aluOut: output from the ALU
+    // zr: true if the ALU result is zero
+    // ng: true if the ALU result is negative
+    // positive: true if the ALU result is positive
+    // jumpNegative: true if the jump condition is negative
+    // jumpZero: true if the jump condition is zero
+    // jumpPositive: true if the jump condition is positive
+    // jump1: intermediate OR of jump conditions
+    // jump2: final OR of jump conditions
+    // loadPC: true if the program counter should be loaded
+    // incPC: true if the program counter should be incremented
+
 }

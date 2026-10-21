@@ -22,8 +22,8 @@
 (LOOP)
     // select the keyboard register and read its value into d
     // zero means no key is pressed; nonzero means a key is pressed
-    @KBD
-    D=M
+    @KBD // keyboard register 
+    D=M // keyboard value 
 
     // jump to white if the keyboard value is zero
     @WHITE
