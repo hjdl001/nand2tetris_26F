@@ -11,10 +11,10 @@ class SymbolTable():
         return symbol in self.symT
 
     def getAddress(self, symbol):
-        assert symbol in self.symT, f'ERROR No symbol {sybol}
+        assert symbol in self.symT, f'ERROR No symbol {symbol}'
         return self.symT[symbol]
 
     def initsymT(self):
         self.symT.update({f'R{i}': i for i in range(16)})
         self.symT['SCREEN'] = 16384
-
+        
