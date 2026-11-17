@@ -1,0 +1,21 @@
+// hello kitty bow catch
+// this file creates the game and starts it.
+
+class Main {
+    function void main() {
+
+        // create a variable to hold the game.
+        var SquareGame game;
+
+        // set up the basket, bows, and starting score.
+        let game = SquareGame.new();
+
+        // start the game and handle the player's controls.
+        do game.run();
+
+        // free the memory after the game ends.
+        do game.dispose();
+
+        return;
+    }
+}

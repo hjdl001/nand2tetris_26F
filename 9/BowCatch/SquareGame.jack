@@ -1,0 +1,277 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/09/Square/SquareGame.jack
+
+// copied + modified file!
+
+// hello kitty bow catch
+// use the left and right arrows to move the basket.
+// catch 5 bows to see hello kitty.
+// press q to quit.
+
+class SquareGame {
+
+    // ---------- game variables ----------
+    // these track the basket, falling bow, score, and next drop.
+    field int basketX, bowX, bowY, score, dropIndex;
+    field Array dropPositions;
+
+
+    // ---------- setting up the game ----------
+    constructor SquareGame new() {
+        // start the basket near the middle of the screen.
+        let basketX = 232;
+        let score = 0;
+        let dropIndex = 0;
+
+        // these are the places the bows can fall from.
+        let dropPositions = Array.new(5);
+        let dropPositions[0] = 250;
+        let dropPositions[1] = 110;
+        let dropPositions[2] = 380;
+        let dropPositions[3] = 165;
+        let dropPositions[4] = 320;
+
+        do resetBow();
+        return this;
+    }
+
+
+    // ---------- freeing memory ----------
+    // clean up the array and game object when the game ends.
+    method void dispose() {
+        do dropPositions.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+
+    // ---------- running the game ----------
+    method void run() {
+        var int key, previousBottom;
+
+        do Screen.clearScreen();
+
+        // show the controls and score above the playing area.
+        do Output.moveCursor(0, 0);
+        do Output.printString(
+            "BOW CATCH  |  Arrow keys: move  |  Q: quit"
+        );
+        do showScore();
+
+        // draw the basket and first bow in black.
+        do Screen.setColor(true);
+        do drawBasket();
+        do drawBow(bowX, bowY);
+
+        let key = Keyboard.keyPressed();
+
+        // keep playing until 5 bows are caught or q is pressed.
+        // 81 is uppercase Q and 113 is lowercase q.
+        while ((score < 5) & (~((key = 81) | (key = 113)))) {
+
+            // erase the old drawings before changing their positions.
+            do Screen.setColor(false);
+            do drawBow(bowX, bowY);
+            do drawBasket();
+
+
+            // ---------- moving the basket ----------
+            // 130 is the left arrow.
+            if ((key = 130) & (basketX > 0)) {
+                let basketX = basketX - 8;
+            }
+
+            // 132 is the right arrow.
+            // the limits keep the basket inside the screen.
+            if ((key = 132) & (basketX < 464)) {
+                let basketX = basketX + 8;
+            }
+
+
+            // ---------- moving the bow ----------
+            // save the bottom of the bow before moving it.
+            let previousBottom = bowY + 7;
+
+            // increasing y moves the bow down.
+            let bowY = bowY + 4;
+
+
+            // ---------- checking for a catch ----------
+            // check when the bow reaches the basket's top edge.
+            if ((previousBottom < 218) & (~((bowY + 7) < 218))) {
+
+                // the bow and basket must overlap horizontally.
+                if ((~((bowX + 13) < basketX)) &
+                    (~((bowX - 13) > (basketX + 47)))) {
+
+                    // add a point and start the next bow.
+                    let score = score + 1;
+                    do showScore();
+                    do resetBow();
+                }
+            }
+
+
+            // ---------- checking for a miss ----------
+            // start another bow if this one falls past the basket.
+            if (bowY > 242) {
+                do resetBow();
+            }
+
+
+            // ---------- updating the screen ----------
+            // draw everything in its new position.
+            do Screen.setColor(true);
+            do drawBow(bowX, bowY);
+            do drawBasket();
+
+            // this pause controls the game's speed.
+            do Sys.wait(25);
+
+            // read the next keyboard input.
+            let key = Keyboard.keyPressed();
+        }
+
+
+        // ---------- showing the ending ----------
+        do Screen.clearScreen();
+        do Output.moveCursor(3, 21);
+
+        if (score = 5) {
+            do Output.printString("You found my bow!");
+            do drawHelloKitty();
+        } else {
+            do Output.printString("Thanks for playing!");
+        }
+
+        return;
+    }
+
+
+    // ---------- starting the next bow ----------
+    method void resetBow() {
+        // choose the next horizontal position and return to the top.
+        let bowX = dropPositions[dropIndex];
+        let bowY = 32;
+
+        let dropIndex = dropIndex + 1;
+
+        // go back to the first position after using all 5.
+        if (dropIndex = 5) {
+            let dropIndex = 0;
+        }
+
+        return;
+    }
+
+
+    // ---------- updating the score ----------
+    method void showScore() {
+        do Output.moveCursor(1, 0);
+        do Output.printString("Bows caught: ");
+        do Output.printInt(score);
+        do Output.printString(" / 5");
+        return;
+    }
+
+
+    // ---------- drawing the basket ----------
+    // using basketX for each part makes the whole basket move together.
+    // this method also erases it when the screen color is white.
+    method void drawBasket() {
+
+        // top edge.
+        do Screen.drawRectangle(
+            basketX, 218, basketX + 47, 220
+        );
+
+        // left side.
+        do Screen.drawLine(
+            basketX + 3, 221, basketX + 10, 234
+        );
+
+        // right side.
+        do Screen.drawLine(
+            basketX + 44, 221, basketX + 37, 234
+        );
+
+        // bottom edge.
+        do Screen.drawLine(
+            basketX + 10, 234, basketX + 37, 234
+        );
+
+        return;
+    }
+
+
+    // ---------- drawing the bow ----------
+    // x and y mark the center of the bow.
+    // two triangles form the loops and a circle forms the knot.
+    method void drawBow(int x, int y) {
+
+        // left loop.
+        do Screen.drawLine(x - 3, y, x - 13, y - 7);
+        do Screen.drawLine(x - 13, y - 7, x - 13, y + 7);
+        do Screen.drawLine(x - 13, y + 7, x - 3, y);
+
+        // right loop.
+        do Screen.drawLine(x + 3, y, x + 13, y - 7);
+        do Screen.drawLine(x + 13, y - 7, x + 13, y + 7);
+        do Screen.drawLine(x + 13, y + 7, x + 3, y);
+
+        // center knot.
+        do Screen.drawCircle(x, y, 3);
+
+        return;
+    }
+
+
+    // ---------- drawing hello kitty ----------
+    // show her face after the player catches 5 bows.
+    method void drawHelloKitty() {
+        do Screen.setColor(true);
+
+        // outline of the head and ears.
+        do Screen.drawLine(203, 118, 206, 87);
+        do Screen.drawLine(206, 87, 230, 102);
+        do Screen.drawLine(230, 102, 279, 102);
+        do Screen.drawLine(279, 102, 302, 87);
+        do Screen.drawLine(302, 87, 309, 118);
+        do Screen.drawLine(309, 118, 315, 142);
+        do Screen.drawLine(315, 142, 307, 159);
+        do Screen.drawLine(307, 159, 289, 172);
+        do Screen.drawLine(289, 172, 222, 172);
+        do Screen.drawLine(222, 172, 204, 159);
+        do Screen.drawLine(204, 159, 196, 142);
+        do Screen.drawLine(196, 142, 203, 118);
+
+        // eyes.
+        do Screen.drawCircle(232, 136, 3);
+        do Screen.drawCircle(280, 136, 3);
+
+        // nose.
+        do Screen.drawRectangle(253, 147, 259, 150);
+
+        // left whiskers.
+        do Screen.drawLine(210, 132, 181, 126);
+        do Screen.drawLine(210, 140, 179, 140);
+        do Screen.drawLine(210, 148, 183, 155);
+
+        // right whiskers.
+        do Screen.drawLine(302, 132, 331, 126);
+        do Screen.drawLine(302, 140, 333, 140);
+        do Screen.drawLine(302, 148, 329, 155);
+
+        // clear the lines behind her bow.
+        do Screen.setColor(false);
+        do Screen.drawRectangle(284, 94, 310, 108);
+
+        // reuse the bow drawing near her ear.
+        do Screen.setColor(true);
+        do drawBow(297, 101);
+
+        return;
+    }
+}

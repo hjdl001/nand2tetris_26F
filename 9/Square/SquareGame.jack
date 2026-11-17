@@ -42,7 +42,7 @@ class SquareGame {
       return;
    }
 
-   /** Runs the game: handles the user's inputs and moves the square accordingly */
+   /** Runs the game: handles the user's inputs and moves the square accordingly */ 
    method void run() {
       var char key;  // the key currently pressed by the user
       var boolean exit;

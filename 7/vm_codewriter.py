@@ -24,6 +24,7 @@ from vm_parser import (CommandType,
 #                       arithmetic.
 # direct push and pop, for pointer and temp
 standard_pushd = '@SP\nA=M\nM=D\n@SP\nM=M+1\n' # done in class but there's a more efficient version.
+#think about assembly for a pop into D 
 
 
 class CodeWriter(object):
@@ -65,7 +66,7 @@ class CodeWriter(object):
         self.static_count = 0
         self.static_name = self.extract_static_name(self._outfile)
 
-    def writeArithmetic(self, command: str):
+    def writeArithmetic(self, command: str): # add your code here
         '''
         Write asm for the arithmetic op. all of these ops require 
         one or two stack operands, perform an op, then push the result
