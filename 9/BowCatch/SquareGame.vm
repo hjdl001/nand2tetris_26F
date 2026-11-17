@@ -1,0 +1,784 @@
+function SquareGame.new 0
+    push constant 6
+    call Memory.alloc 1
+    pop pointer 0
+    push constant 232
+    pop this 0
+    push constant 0
+    pop this 3
+    push constant 0
+    pop this 4
+    push constant 5
+    call Array.new 1
+    pop this 5
+    push constant 0
+    push this 5
+    add
+    push constant 250
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push constant 1
+    push this 5
+    add
+    push constant 110
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push constant 2
+    push this 5
+    add
+    push constant 380
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push constant 3
+    push this 5
+    add
+    push constant 165
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push constant 4
+    push this 5
+    add
+    push constant 320
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push pointer 0
+    call SquareGame.resetBow 1
+    pop temp 0
+    push pointer 0
+    return
+function SquareGame.dispose 0
+    push argument 0
+    pop pointer 0
+    push this 5
+    call Array.dispose 1
+    pop temp 0
+    push pointer 0
+    call Memory.deAlloc 1
+    pop temp 0
+    push constant 0
+    return
+function SquareGame.run 2
+    push argument 0
+    pop pointer 0
+    call Screen.clearScreen 0
+    pop temp 0
+    push constant 0
+    push constant 0
+    call Output.moveCursor 2
+    pop temp 0
+    push constant 42
+    call String.new 1
+    push constant 66
+    call String.appendChar 2
+    push constant 79
+    call String.appendChar 2
+    push constant 87
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 67
+    call String.appendChar 2
+    push constant 65
+    call String.appendChar 2
+    push constant 84
+    call String.appendChar 2
+    push constant 67
+    call String.appendChar 2
+    push constant 72
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 124
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 65
+    call String.appendChar 2
+    push constant 114
+    call String.appendChar 2
+    push constant 114
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 119
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 107
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 121
+    call String.appendChar 2
+    push constant 115
+    call String.appendChar 2
+    push constant 58
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 109
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 118
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 124
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 81
+    call String.appendChar 2
+    push constant 58
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 113
+    call String.appendChar 2
+    push constant 117
+    call String.appendChar 2
+    push constant 105
+    call String.appendChar 2
+    push constant 116
+    call String.appendChar 2
+    call Output.printString 1
+    pop temp 0
+    push pointer 0
+    call SquareGame.showScore 1
+    pop temp 0
+    push constant 1
+    neg
+    call Screen.setColor 1
+    pop temp 0
+    push pointer 0
+    call SquareGame.drawBasket 1
+    pop temp 0
+    push pointer 0
+    push this 1
+    push this 2
+    call SquareGame.drawBow 3
+    pop temp 0
+    call Keyboard.keyPressed 0
+    pop local 0
+label SquareGame_0
+    push this 3
+    push constant 5
+    lt
+    push local 0
+    push constant 81
+    eq
+    push local 0
+    push constant 113
+    eq
+    or
+    not
+    and
+    not
+    if-goto SquareGame_1
+    push constant 0
+    call Screen.setColor 1
+    pop temp 0
+    push pointer 0
+    push this 1
+    push this 2
+    call SquareGame.drawBow 3
+    pop temp 0
+    push pointer 0
+    call SquareGame.drawBasket 1
+    pop temp 0
+    push local 0
+    push constant 130
+    eq
+    push this 0
+    push constant 0
+    gt
+    and
+    not
+    if-goto SquareGame_3
+    push this 0
+    push constant 8
+    sub
+    pop this 0
+    goto SquareGame_2
+label SquareGame_3
+label SquareGame_2
+    push local 0
+    push constant 132
+    eq
+    push this 0
+    push constant 464
+    lt
+    and
+    not
+    if-goto SquareGame_5
+    push this 0
+    push constant 8
+    add
+    pop this 0
+    goto SquareGame_4
+label SquareGame_5
+label SquareGame_4
+    push this 2
+    push constant 7
+    add
+    pop local 1
+    push this 2
+    push constant 4
+    add
+    pop this 2
+    push local 1
+    push constant 218
+    lt
+    push this 2
+    push constant 7
+    add
+    push constant 218
+    lt
+    not
+    and
+    not
+    if-goto SquareGame_7
+    push this 1
+    push constant 13
+    add
+    push this 0
+    lt
+    not
+    push this 1
+    push constant 13
+    sub
+    push this 0
+    push constant 47
+    add
+    gt
+    not
+    and
+    not
+    if-goto SquareGame_9
+    push this 3
+    push constant 1
+    add
+    pop this 3
+    push pointer 0
+    call SquareGame.showScore 1
+    pop temp 0
+    push pointer 0
+    call SquareGame.resetBow 1
+    pop temp 0
+    goto SquareGame_8
+label SquareGame_9
+label SquareGame_8
+    goto SquareGame_6
+label SquareGame_7
+label SquareGame_6
+    push this 2
+    push constant 242
+    gt
+    not
+    if-goto SquareGame_11
+    push pointer 0
+    call SquareGame.resetBow 1
+    pop temp 0
+    goto SquareGame_10
+label SquareGame_11
+label SquareGame_10
+    push constant 1
+    neg
+    call Screen.setColor 1
+    pop temp 0
+    push pointer 0
+    push this 1
+    push this 2
+    call SquareGame.drawBow 3
+    pop temp 0
+    push pointer 0
+    call SquareGame.drawBasket 1
+    pop temp 0
+    push constant 25
+    call Sys.wait 1
+    pop temp 0
+    call Keyboard.keyPressed 0
+    pop local 0
+    goto SquareGame_0
+label SquareGame_1
+    call Screen.clearScreen 0
+    pop temp 0
+    push constant 3
+    push constant 21
+    call Output.moveCursor 2
+    pop temp 0
+    push this 3
+    push constant 5
+    eq
+    not
+    if-goto SquareGame_13
+    push constant 17
+    call String.new 1
+    push constant 89
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 117
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 102
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 117
+    call String.appendChar 2
+    push constant 110
+    call String.appendChar 2
+    push constant 100
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 109
+    call String.appendChar 2
+    push constant 121
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 98
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 119
+    call String.appendChar 2
+    push constant 33
+    call String.appendChar 2
+    call Output.printString 1
+    pop temp 0
+    push pointer 0
+    call SquareGame.drawHelloKitty 1
+    pop temp 0
+    goto SquareGame_12
+label SquareGame_13
+    push constant 19
+    call String.new 1
+    push constant 84
+    call String.appendChar 2
+    push constant 104
+    call String.appendChar 2
+    push constant 97
+    call String.appendChar 2
+    push constant 110
+    call String.appendChar 2
+    push constant 107
+    call String.appendChar 2
+    push constant 115
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 102
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 114
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 112
+    call String.appendChar 2
+    push constant 108
+    call String.appendChar 2
+    push constant 97
+    call String.appendChar 2
+    push constant 121
+    call String.appendChar 2
+    push constant 105
+    call String.appendChar 2
+    push constant 110
+    call String.appendChar 2
+    push constant 103
+    call String.appendChar 2
+    push constant 33
+    call String.appendChar 2
+    call Output.printString 1
+    pop temp 0
+label SquareGame_12
+    push constant 0
+    return
+function SquareGame.resetBow 0
+    push argument 0
+    pop pointer 0
+    push this 4
+    push this 5
+    add
+    pop pointer 1
+    push that 0
+    pop this 1
+    push constant 32
+    pop this 2
+    push this 4
+    push constant 1
+    add
+    pop this 4
+    push this 4
+    push constant 5
+    eq
+    not
+    if-goto SquareGame_15
+    push constant 0
+    pop this 4
+    goto SquareGame_14
+label SquareGame_15
+label SquareGame_14
+    push constant 0
+    return
+function SquareGame.showScore 0
+    push argument 0
+    pop pointer 0
+    push constant 1
+    push constant 0
+    call Output.moveCursor 2
+    pop temp 0
+    push constant 13
+    call String.new 1
+    push constant 66
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 119
+    call String.appendChar 2
+    push constant 115
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 99
+    call String.appendChar 2
+    push constant 97
+    call String.appendChar 2
+    push constant 117
+    call String.appendChar 2
+    push constant 103
+    call String.appendChar 2
+    push constant 104
+    call String.appendChar 2
+    push constant 116
+    call String.appendChar 2
+    push constant 58
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    call Output.printString 1
+    pop temp 0
+    push this 3
+    call Output.printInt 1
+    pop temp 0
+    push constant 4
+    call String.new 1
+    push constant 32
+    call String.appendChar 2
+    push constant 47
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 53
+    call String.appendChar 2
+    call Output.printString 1
+    pop temp 0
+    push constant 0
+    return
+function SquareGame.drawBasket 0
+    push argument 0
+    pop pointer 0
+    push this 0
+    push constant 218
+    push this 0
+    push constant 47
+    add
+    push constant 220
+    call Screen.drawRectangle 4
+    pop temp 0
+    push this 0
+    push constant 3
+    add
+    push constant 221
+    push this 0
+    push constant 10
+    add
+    push constant 234
+    call Screen.drawLine 4
+    pop temp 0
+    push this 0
+    push constant 44
+    add
+    push constant 221
+    push this 0
+    push constant 37
+    add
+    push constant 234
+    call Screen.drawLine 4
+    pop temp 0
+    push this 0
+    push constant 10
+    add
+    push constant 234
+    push this 0
+    push constant 37
+    add
+    push constant 234
+    call Screen.drawLine 4
+    pop temp 0
+    push constant 0
+    return
+function SquareGame.drawBow 0
+    push argument 0
+    pop pointer 0
+    push argument 1
+    push constant 3
+    sub
+    push argument 2
+    push argument 1
+    push constant 13
+    sub
+    push argument 2
+    push constant 7
+    sub
+    call Screen.drawLine 4
+    pop temp 0
+    push argument 1
+    push constant 13
+    sub
+    push argument 2
+    push constant 7
+    sub
+    push argument 1
+    push constant 13
+    sub
+    push argument 2
+    push constant 7
+    add
+    call Screen.drawLine 4
+    pop temp 0
+    push argument 1
+    push constant 13
+    sub
+    push argument 2
+    push constant 7
+    add
+    push argument 1
+    push constant 3
+    sub
+    push argument 2
+    call Screen.drawLine 4
+    pop temp 0
+    push argument 1
+    push constant 3
+    add
+    push argument 2
+    push argument 1
+    push constant 13
+    add
+    push argument 2
+    push constant 7
+    sub
+    call Screen.drawLine 4
+    pop temp 0
+    push argument 1
+    push constant 13
+    add
+    push argument 2
+    push constant 7
+    sub
+    push argument 1
+    push constant 13
+    add
+    push argument 2
+    push constant 7
+    add
+    call Screen.drawLine 4
+    pop temp 0
+    push argument 1
+    push constant 13
+    add
+    push argument 2
+    push constant 7
+    add
+    push argument 1
+    push constant 3
+    add
+    push argument 2
+    call Screen.drawLine 4
+    pop temp 0
+    push argument 1
+    push argument 2
+    push constant 3
+    call Screen.drawCircle 3
+    pop temp 0
+    push constant 0
+    return
+function SquareGame.drawHelloKitty 0
+    push argument 0
+    pop pointer 0
+    push constant 1
+    neg
+    call Screen.setColor 1
+    pop temp 0
+    push constant 203
+    push constant 118
+    push constant 206
+    push constant 87
+    call Screen.drawLine 4
+    pop temp 0
+    push constant 206
+    push constant 87
+    push constant 230
+    push constant 102
+    call Screen.drawLine 4
+    pop temp 0
+    push constant 230
+    push constant 102
+    push constant 279
+    push constant 102
+    call Screen.drawLine 4
+    pop temp 0
+    push constant 279
+    push constant 102
+    push constant 302
+    push constant 87
+    call Screen.drawLine 4
+    pop temp 0
+    push constant 302
+    push constant 87
+    push constant 309
+    push constant 118
+    call Screen.drawLine 4
+    pop temp 0
+    push constant 309
+    push constant 118
+    push constant 315
+    push constant 142
+    call Screen.drawLine 4
+    pop temp 0
+    push constant 315
+    push constant 142
+    push constant 307
+    push constant 159
+    call Screen.drawLine 4
+    pop temp 0
+    push constant 307
+    push constant 159
+    push constant 289
+    push constant 172
+    call Screen.drawLine 4
+    pop temp 0
+    push constant 289
+    push constant 172
+    push constant 222
+    push constant 172
+    call Screen.drawLine 4
+    pop temp 0
+    push constant 222
+    push constant 172
+    push constant 204
+    push constant 159
+    call Screen.drawLine 4
+    pop temp 0
+    push constant 204
+    push constant 159
+    push constant 196
+    push constant 142
+    call Screen.drawLine 4
+    pop temp 0
+    push constant 196
+    push constant 142
+    push constant 203
+    push constant 118
+    call Screen.drawLine 4
+    pop temp 0
+    push constant 232
+    push constant 136
+    push constant 3
+    call Screen.drawCircle 3
+    pop temp 0
+    push constant 280
+    push constant 136
+    push constant 3
+    call Screen.drawCircle 3
+    pop temp 0
+    push constant 253
+    push constant 147
+    push constant 259
+    push constant 150
+    call Screen.drawRectangle 4
+    pop temp 0
+    push constant 210
+    push constant 132
+    push constant 181
+    push constant 126
+    call Screen.drawLine 4
+    pop temp 0
+    push constant 210
+    push constant 140
+    push constant 179
+    push constant 140
+    call Screen.drawLine 4
+    pop temp 0
+    push constant 210
+    push constant 148
+    push constant 183
+    push constant 155
+    call Screen.drawLine 4
+    pop temp 0
+    push constant 302
+    push constant 132
+    push constant 331
+    push constant 126
+    call Screen.drawLine 4
+    pop temp 0
+    push constant 302
+    push constant 140
+    push constant 333
+    push constant 140
+    call Screen.drawLine 4
+    pop temp 0
+    push constant 302
+    push constant 148
+    push constant 329
+    push constant 155
+    call Screen.drawLine 4
+    pop temp 0
+    push constant 0
+    call Screen.setColor 1
+    pop temp 0
+    push constant 284
+    push constant 94
+    push constant 310
+    push constant 108
+    call Screen.drawRectangle 4
+    pop temp 0
+    push constant 1
+    neg
+    call Screen.setColor 1
+    pop temp 0
+    push pointer 0
+    push constant 297
+    push constant 101
+    call SquareGame.drawBow 3
+    pop temp 0
+    push constant 0
+    return

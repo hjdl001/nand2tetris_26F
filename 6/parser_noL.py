@@ -19,10 +19,18 @@ class InstructionType(Enum):
 class Parser(object): # this is the parser for the hack assembly language, without symbol handling
     def __init__(self, input_file):
         self.lines = []
-        self.cur = -1
+        self.cur = -1 # the reset 
         self.inputfile = input_file
         self.preprocessFile()
         self.curtype: InstructionType = InstructionType.NO_TYPE
+        self.curdest = None
+        self.cursymbol = None
+        self.curcomp = None
+        self.curjump = None
+
+    def reset(self):
+        self.cur = -1
+        self.curtype = InstructionType.NO_TYPE
         self.curdest = None
         self.cursymbol = None
         self.curcomp = None
@@ -114,7 +122,7 @@ class Parser(object): # this is the parser for the hack assembly language, witho
 
         elif line[0] == '(':
             self.curtype = InstructionType.L_INSTRUCTION
-            self.cursymbol = line[1:-1]  # strip the parens
+            self.cursymbol = line[1:-1]  # strip the parentheses
 
         else:
             # the harder one here. Set the type to C, the symbol to None.
