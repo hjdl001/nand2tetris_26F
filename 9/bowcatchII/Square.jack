@@ -1,0 +1,66 @@
+// adapted from the nand2tetris project 9 square starter code.
+
+/** draws the basket and controls its horizontal movement. */
+class Square {
+   field int x, y, size;
+
+   constructor Square new(int ax, int ay, int asize) {
+      let x = ax;
+      let y = ay;
+      let size = asize;
+      do draw();
+      return this;
+   }
+
+   method void dispose() {
+      do Memory.deAlloc(this);
+      return;
+   }
+
+   method void draw() {
+      do Screen.setColor(true);
+      do drawShape();
+      return;
+   }
+
+   method void erase() {
+      do Screen.setColor(false);
+      do drawShape();
+      return;
+   }
+
+   method void drawShape() {
+      var int right;
+      let right = (x + size) - 1;
+
+      // draw the rim, sides, and bottom of the basket.
+      do Screen.drawRectangle(x, y, right, y + 2);
+      do Screen.drawLine(x + 3, y + 3, x + 10, y + 16);
+      do Screen.drawLine(right - 3, y + 3, right - 10, y + 16);
+      do Screen.drawLine(x + 10, y + 16, right - 10, y + 16);
+      return;
+   }
+
+   method void moveLeft() {
+      if (x > 0) {
+         do erase();
+         let x = x - 8;
+         do draw();
+      }
+      return;
+   }
+
+   method void moveRight() {
+      if ((x + size) < 512) {
+         do erase();
+         let x = x + 8;
+         do draw();
+      }
+      return;
+   }
+
+   /** checks whether the bow and basket overlap horizontally. */
+   method boolean overlaps(int left, int right) {
+      return ~(right < x) & ~(left > ((x + size) - 1));
+   }
+}

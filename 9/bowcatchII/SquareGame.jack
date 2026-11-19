@@ -1,0 +1,210 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/09/Square/SquareGame.jack
+
+// copied + modified file!
+
+// hello kitty bow catch
+// use the left and right arrows to move the basket.
+// catch 5 bows to see hello kitty.
+// press q to quit.
+
+// adapted from the nand2tetris project 9 squaregame starter code.
+
+// adapted from the nand2tetris project 9 squaregame starter code.
+
+/** runs bow catch. catch five bows to win. */
+class SquareGame {
+   field Square square;
+   field int direction; // 0 = still, 3 = left, 4 = right
+   field int bowX, bowY, score, missed, nextSpawn;
+   field Array spawns;
+
+   constructor SquareGame new() {
+      let square = Square.new(232, 218, 48);
+      let direction = 0;
+      let score = 0;
+      let missed = 0;
+      let nextSpawn = 0;
+
+      let spawns = Array.new(5);
+      let spawns[0] = 250;
+      let spawns[1] = 110;
+      let spawns[2] = 380;
+      let spawns[3] = 165;
+      let spawns[4] = 320;
+      do resetBow();
+      return this;
+   }
+
+   method void dispose() {
+      do square.dispose();
+      do spawns.dispose();
+      do Memory.deAlloc(this);
+      return;
+   }
+
+   method void moveSquare() {
+      if (direction = 3) { do square.moveLeft(); }
+      if (direction = 4) { do square.moveRight(); }
+      return;
+   }
+
+   method void run() {
+      var char key;
+      var boolean exit;
+
+      let exit = false;
+      do Screen.clearScreen();
+      do Output.moveCursor(0, 0);
+      do print("BOW CATCH | Left/Right | Q: quit");
+      do showScore();
+      do square.draw();
+      do drawBow(true);
+
+      while (~exit & (score < 5)) {
+         let key = Keyboard.keyPressed();
+         let direction = 0;
+         if (key = 130) { let direction = 3; }
+         if (key = 132) { let direction = 4; }
+         let exit = (key = 81) | (key = 113);
+
+         if (~exit) {
+            do drawBow(false);
+            do moveSquare();
+            do updateBow();
+            do square.draw();
+            do drawBow(true);
+            do Sys.wait(25);
+         }
+      }
+
+      do Screen.clearScreen();
+      do Output.moveCursor(3, 21);
+      if (score = 5) {
+         do print("You caught all 5!");
+         do drawHelloKitty();
+      } else {
+         do print("Thanks for playing!");
+      }
+      do showScore();
+      return;
+   }
+
+   method void updateBow() {
+      var int oldBottom;
+      let oldBottom = bowY + 7;
+
+      // each catch makes the next bow fall one pixel faster per frame.
+      let bowY = bowY + (4 + score);
+
+      // check for a catch when the bow crosses the basket rim.
+      if ((oldBottom < 218) & ~((bowY + 7) < 218)) {
+         if (square.overlaps(bowX - 13, bowX + 13)) {
+            let score = score + 1;
+            do showScore();
+            do resetBow();
+            return;
+         }
+      }
+
+      // count the miss once, then send down the next bow.
+      if (bowY > 242) {
+         let missed = missed + 1;
+         do showScore();
+         do resetBow();
+      }
+      return;
+   }
+
+   method void resetBow() {
+      let bowX = spawns[nextSpawn];
+      let bowY = 32;
+      let nextSpawn = nextSpawn + 1;
+      if (nextSpawn = 5) { let nextSpawn = 0; }
+      return;
+   }
+
+   /** draws or erases the bow at the given position. */
+   method void drawRibbon(int x, int y, boolean color) {
+      var int side, edge, shoulder, knot;
+
+      do Screen.setColor(color);
+      let side = -1;
+
+      // draw the left wing, then mirror it for the right wing.
+      while (side < 2) {
+         let edge = x + (13 * side);
+         let shoulder = x + (9 * side);
+         let knot = x + (3 * side);
+
+         do Screen.drawLine(knot, y, shoulder, y - 7);
+         do Screen.drawLine(shoulder, y - 7, edge, y - 5);
+         do Screen.drawLine(edge, y - 5, edge, y + 5);
+         do Screen.drawLine(edge, y + 5, shoulder, y + 7);
+         do Screen.drawLine(shoulder, y + 7, knot, y);
+         do Screen.drawLine(x + (6 * side), y, knot, y);
+
+         let side = side + 2;
+      }
+
+      do Screen.drawCircle(x, y, 3);
+      return;
+   }
+
+   method void drawBow(boolean color) {
+      do drawRibbon(bowX, bowY, color);
+      return;
+   }
+
+   method void drawHelloKitty() {
+      do Screen.setColor(true);
+
+      // draw the face outline and ears.
+      do Screen.drawLine(203, 118, 206, 87);
+      do Screen.drawLine(206, 87, 230, 102);
+      do Screen.drawLine(230, 102, 279, 102);
+      do Screen.drawLine(279, 102, 302, 87);
+      do Screen.drawLine(302, 87, 309, 118);
+      do Screen.drawLine(309, 118, 315, 142);
+      do Screen.drawLine(315, 142, 307, 159);
+      do Screen.drawLine(307, 159, 289, 172);
+      do Screen.drawLine(289, 172, 222, 172);
+      do Screen.drawLine(222, 172, 204, 159);
+      do Screen.drawLine(204, 159, 196, 142);
+      do Screen.drawLine(196, 142, 203, 118);
+
+      // add the eyes, nose, and whiskers.
+      do Screen.drawCircle(232, 136, 3);
+      do Screen.drawCircle(280, 136, 3);
+      do Screen.drawRectangle(253, 147, 259, 150);
+      do Screen.drawLine(210, 132, 181, 126);
+      do Screen.drawLine(210, 140, 179, 140);
+      do Screen.drawLine(210, 148, 183, 155);
+      do Screen.drawLine(302, 132, 331, 126);
+      do Screen.drawLine(302, 140, 333, 140);
+      do Screen.drawLine(302, 148, 329, 155);
+
+      // clear a space at the ear and draw the same ribbon used in the game.
+      do Screen.setColor(false);
+      do Screen.drawRectangle(284, 94, 310, 108);
+      do drawRibbon(297, 101, true);
+      return;
+   }
+
+   method void showScore() {
+      do Output.moveCursor(1, 0);
+      do print("Caught ");
+      do Output.printInt(score);
+      do print("/5  |  Missed ");
+      do Output.printInt(missed);
+      return;
+   }
+
+   method void print(String message) {
+      do Output.printString(message);
+      do message.dispose();
+      return;
+   }
+}

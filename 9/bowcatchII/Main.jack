@@ -1,0 +1,15 @@
+// hello kitty bow catch
+// this file creates the game and starts it.
+
+// adapted from the nand2tetris project 9 square starter code.
+
+/** creates the game, runs it, and frees its memory. */
+class Main {
+   function void main() {
+      var SquareGame game;
+      let game = SquareGame.new();
+      do game.run();
+      do game.dispose();
+      return;
+   }
+}
